@@ -1,4 +1,4 @@
-public class Calculator
+public class Skills
 {
     public int CalculateNumbers(int number1, int number2)
     {
