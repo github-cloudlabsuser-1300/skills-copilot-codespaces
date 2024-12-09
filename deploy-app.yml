@@ -1,0 +1,31 @@
+name: Email Report
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Read report file
+      id: read_report
+      run: |
+        REPORT=$(cat path/to/report.txt)
+        echo "::set-output name=report::$REPORT"
+
+    - name: Send email
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.example.com
+        server_port: 587
+        username: ${{ secrets.SMTP_USERNAME }}
+        password: ${{ secrets.SMTP_PASSWORD }}
+        subject: Daily Report
+        body: ${{ steps.read_report.outputs.report }}
+        to: recipient@example.com
+        from: sender@example.com
